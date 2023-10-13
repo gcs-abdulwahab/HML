@@ -13,8 +13,8 @@ return new class extends Migration
     {
         Schema::create('user_payments', function (Blueprint $table) {
             $table->id();
-            $table->int('total_amount')->default(0);
-            $table->int('pay_amount')->default(0);
+            $table->integer('total_amount')->default(0);
+            $table->integer('pay_amount')->default(0);
             $table->date('month')->default(now());
             $table->timestamps();
         });

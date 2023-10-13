@@ -14,8 +14,8 @@ return new class extends Migration
         Schema::create('general_services', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->int('spentable_time')->default(30);
-            $table->int('usage')->default(6);
+            $table->integer('spentable_time')->default(30);
+            $table->integer('usage')->default(6);
             $table->timestamps();
         });
     }

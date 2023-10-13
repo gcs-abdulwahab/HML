@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('securities', function (Blueprint $table) {
             $table->id();
             $table->string('reson')->default('breakage');
-            $table->int('deduction')->default(0);
+            $table->integer('deduction')->default(0);
             $table->unsignedBigInteger('user_id');
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->timestamps();

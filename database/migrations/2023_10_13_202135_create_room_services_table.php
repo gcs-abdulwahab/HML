@@ -14,8 +14,8 @@ return new class extends Migration
         Schema::create('room_services', function (Blueprint $table) {
             $table->id();
             $table->string('service_name');
-            $table->int('rating')->default(5);
-            $table->int('charges')->default(0);
+            $table->integer('rating')->default(5);
+            $table->integer('charges')->default(0);
             $table->timestamps();
         });
     }

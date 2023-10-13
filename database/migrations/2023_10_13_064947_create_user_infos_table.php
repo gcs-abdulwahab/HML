@@ -23,7 +23,7 @@ return new class extends Migration
             $table->string('emergency_phone',20)->nullable();
             $table->string('address')->nullable();
             $table->string('city',50)->nullable();
-            $table->int('security_pay')->default(0);
+            $table->integer('security_pay')->default(0);
             $table->timestamps();
         });
     }
