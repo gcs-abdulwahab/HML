@@ -12,7 +12,7 @@ class RoomController extends Controller
      */
     public function index()
     {
-        //
+       $rooms = Room::all();
     }
 
     /**
@@ -20,7 +20,7 @@ class RoomController extends Controller
      */
     public function create()
     {
-        //
+
     }
 
     /**
@@ -28,7 +28,13 @@ class RoomController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'room_number' => ['required'],
+            'capacity' => ['required'],
+        ]);
+
+        $room = Room::create($request->all());
+        
     }
 
     /**
