@@ -18,7 +18,7 @@ class RoomController extends Controller
      */
     public function index()
     {
-        $rooms = Room::all();
+        $rooms = Room::with('ImagesRoom')->get();
         return Inertia::render('Test/Test', [
             'data' => $rooms,
         ]);
@@ -66,6 +66,7 @@ class RoomController extends Controller
      */
     public function show(Room $room)
     {
+        $room = $room->with('ImagesRoom')->find($room->id);
         return inertia('Test/Test2', [
             'data' => $room
         ]);
