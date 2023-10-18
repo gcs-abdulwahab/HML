@@ -6,6 +6,7 @@ use App\Models\ImageRoom;
 use App\Models\Room;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\Storage;
 use Inertia\Inertia;
 
 
@@ -98,7 +99,7 @@ class RoomController extends Controller
                 $images = $request->file('images');
                 foreach($images as $key => $value){
                     $fileName = time().$value->getClientOriginalName();
-                    $filename = $value->storeAs('room_images',$fileName);
+                    $value->storeAs('room_images',$fileName);
                     ImageRoom::create(['image'=>$fileName,'room_id'=>$room->id]);
                 }
             }
@@ -113,6 +114,16 @@ class RoomController extends Controller
      */
     public function destroy(Room $room)
     {
-        //
+        $room = $room->with('ImagesRoom')->find($room->id);
+
+        foreach($room->ImagesRoom as $key => $value){
+            if(Storage::exists('room_images/'.$value->image)){
+                Storage::delete('room_images/'.$value->image);
+            }
+        }
+
+        $room->delete();
+
+        return redirect(route('room.index'));
     }
 }
