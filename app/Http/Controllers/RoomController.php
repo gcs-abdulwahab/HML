@@ -45,12 +45,14 @@ class RoomController extends Controller
         $room = Room::create($request->all());
 
         if ($room) {
-            $fileName = null;
-            $images = $request->file('images');
-            foreach($images as $key => $value){
-                $fileName = time().$value->getClientOriginalName();
-                $filename = $value->storeAs('room_images',$fileName);
-                ImageRoom::create(['image'=>$fileName,'room_id'=>$room->id]);
+            if($request->hasFile('images')){
+                $fileName = null;
+                $images = $request->file('images');
+                foreach($images as $key => $value){
+                    $fileName = time().$value->getClientOriginalName();
+                    $filename = $value->storeAs('room_images',$fileName);
+                    ImageRoom::create(['image'=>$fileName,'room_id'=>$room->id]);
+                }
             }
             return  back()->with('message', 'room created ');
         } else {
@@ -73,7 +75,7 @@ class RoomController extends Controller
      */
     public function edit(Room $room)
     {
-        //
+
     }
 
     /**
@@ -82,19 +84,28 @@ class RoomController extends Controller
     public function update(Request $request, Room $room)
     {
 
-        $files = $request->get('images');
-        dd($files);
-        foreach ($files as $key => $file) {
-            dd($file);
-        }
-        // dd($request);
+        $request->validate([
+            'room_number' => ['required', 'integer','unique:rooms,room_number,except,'.$room->id],
+            'capacity' => ['required', 'integer'],
+            'images' => ['nullable'],
+        ]);
 
-        // $res = $room->update($request->all());
-        // if ($res) {
-        //     return back()->with('message', 'Room updated');
-        // } else {
-        //     return back()->with('error', 'Something Wrong!');
-        // }
+        $update = $room->update($request->all());
+
+        if ($update) {
+            if($request->hasFile('images')){
+                $fileName = null;
+                $images = $request->file('images');
+                foreach($images as $key => $value){
+                    $fileName = time().$value->getClientOriginalName();
+                    $filename = $value->storeAs('room_images',$fileName);
+                    ImageRoom::create(['image'=>$fileName,'room_id'=>$room->id]);
+                }
+            }
+            return  back()->with('message', 'room updated ');
+        } else {
+            return  back()->with('error', 'Failed to update ');
+        }
     }
 
     /**
