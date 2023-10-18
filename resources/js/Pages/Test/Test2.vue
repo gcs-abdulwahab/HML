@@ -2,9 +2,13 @@
     {{ props.data }}
     {{ props.message }}
 
-    <form @submit.prevent="createRoom">
+    <form @submit.prevent="createRoom" enctype="multipart/form-data">
         <input type="text" v-model="form.room_number">
         <input type="text" v-model="form.capacity">
+        <input type="file"  @input="form.images = $event.target.files[0]">
+        <progress v-if="form.progress" :value="form.progress.percentage" max="100">
+      {{ form.progress.percentage }}%
+    </progress>
         <input type="submit" value="submit">
     </form>
 </template>
@@ -26,8 +30,13 @@ const props = defineProps({
     }
 });
 
+// let uploadImages = (event)=>{
+//     form.images = event.target.files;
+// }
+
 let createRoom = ()=>{
-    form.patch(route('room.update',props.data.id),{
+    // console.log(props.data.id);
+    form.post(route('room.update'),{
         onSuccess:(res)=>{
             console.log(res);
             if(props.message!=null){
@@ -45,7 +54,8 @@ let createRoom = ()=>{
 let form = useForm({
     room_number:props.data.room_number,
     capacity:props.data.capacity,
-})
+    images:null
+},{forceFormData: true})
 // onUpdated(()=>{
 
 // })

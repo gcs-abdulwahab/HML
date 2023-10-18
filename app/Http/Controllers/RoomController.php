@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\ImageRoom;
 use App\Models\Room;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redirect;
@@ -38,14 +39,19 @@ class RoomController extends Controller
         $request->validate([
             'room_number' => ['required', 'integer', 'unique:rooms,room_number'],
             'capacity' => ['required', 'integer'],
+            'images' => ['nullable'],
         ]);
-
-        
-
 
         $room = Room::create($request->all());
 
         if ($room) {
+            $fileName = null;
+            $images = $request->file('images');
+            foreach($images as $key => $value){
+                $fileName = time().$value->getClientOriginalName();
+                $filename = $value->storeAs('room_images',$fileName);
+                ImageRoom::create(['image'=>$fileName,'room_id'=>$room->id]);
+            }
             return  back()->with('message', 'room created ');
         } else {
             return  back()->with('error', 'Failed to created ');
@@ -75,12 +81,20 @@ class RoomController extends Controller
      */
     public function update(Request $request, Room $room)
     {
-        $res = $room->update($request->all());
-        if ($res) {
-            return back()->with('message', 'Room updated');
-        } else {
-            return back()->with('error', 'Something Wrong!');
+
+        $files = $request->get('images');
+        dd($files);
+        foreach ($files as $key => $file) {
+            dd($file);
         }
+        // dd($request);
+
+        // $res = $room->update($request->all());
+        // if ($res) {
+        //     return back()->with('message', 'Room updated');
+        // } else {
+        //     return back()->with('error', 'Something Wrong!');
+        // }
     }
 
     /**

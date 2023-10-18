@@ -31,7 +31,10 @@ Route::get('/dashboard', function () {
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 
-Route::resource('room', RoomController::class);
+// Route::resource('room', RoomController::class);
+Route::post('room/{room}', [RoomController::class,'update'])->name('room.update');
+Route::resource('room', RoomController::class,['except' => ['update']]);
+
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');

@@ -5,6 +5,7 @@
     <form @submit.prevent="createRoom">
         <input type="text" v-model="form.room_number">
         <input type="text" v-model="form.capacity">
+        <input type="file"  @input="form.images = $event.target.files" multiple accept="image/*">
         <input type="submit" value="submit">
     </form>
 </template>
@@ -45,6 +46,7 @@ let createRoom = ()=>{
 let form = useForm({
     room_number:null,
     capacity:null,
+    images:[]
 })
 // onUpdated(()=>{
 
