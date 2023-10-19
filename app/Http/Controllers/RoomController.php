@@ -28,7 +28,7 @@ class RoomController extends Controller
      */
     public function create()
     {
-        return  Redirect('/room')->with('message', 'All rooms creTE ');
+        return  Redirect('/rooms')->with('message', 'All rooms creTE ');
     }
 
     /**

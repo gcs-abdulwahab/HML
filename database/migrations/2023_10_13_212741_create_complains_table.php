@@ -15,10 +15,10 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('user_id');
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
-            $table->text('message')->default('no');
-            $table->boolean('closed')->default(0);
-            $table->boolean('inprogress')->default(0);
-            $table->boolean('watched')->default(0);
+            $table->text('message');
+            $table->boolean('closed')->default(false);
+            $table->boolean('inprogress')->default(false);
+            $table->boolean('watched')->default(false);
             $table->timestamps();
         });
     }
